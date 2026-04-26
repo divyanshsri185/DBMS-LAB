@@ -1,0 +1,3 @@
+Aim: To create a new database. Requirement: MySQL/MariaDB environment.
+Theory: Database stores tables and related data.
+Query: CREATE DATABASE 2cse17G1_270;

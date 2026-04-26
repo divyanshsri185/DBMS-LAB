@@ -1,5 +1,697 @@
-Aim: To create a new database. Requirement: MySQL/MariaDB environment.
-Theory: Database stores tables and related data.
-Query: CREATE DATABASE 2cse17G1_270;
+# DBMS LAB – Divyansh Srivastava | 2CSE17G1_270
 
+---
+
+## Experiment 1 – Database & Table Creation
+
+### ✅ STEP 1 – Create Database
+
+**Aim:** To create a new database.  
+**Requirement:** MySQL/MariaDB environment.  
+**Theory:** Database stores tables and related data.  
+**Query:**
+```sql
+CREATE DATABASE 2cse17g1_270;
+```
+
+![image](https://github.com/user-attachments/assets/2CSE17G1_270-step1)
+
+---
+
+### ✅ STEP 2 – Use Database
+
+**Aim:** To select database for operations.  
+**Requirement:** Created database.  
+**Theory:** USE command activates a database.  
+**Query:**
+```sql
+USE 2cse17g1_270;
+```
+
+---
+
+### ✅ STEP 3 – Create DEPARTMENT Table
+
+**Aim:** To create department table.  
+**Requirement:** Database selected.  
+**Theory:** Table stores structured records.  
+**Query:**
+```sql
+CREATE TABLE department (
+    deptno INT PRIMARY KEY,
+    dname  VARCHAR(15) NOT NULL
+);
+```
+
+---
+
+### ✅ STEP 4 – Create EMPLOYEE Table
+
+**Aim:** To create employee table with constraints.  
+**Requirement:** Department table exists.  
+**Theory:** Tables define schema using columns and constraints.  
+**Query:**
+```sql
+CREATE TABLE employee (
+    empno    INT PRIMARY KEY,
+    ename    VARCHAR(20) NOT NULL,
+    job      VARCHAR(20),
+    mgr      INT,
+    hiredate DATE,
+    sal      DECIMAL(10,2),
+    comm     DECIMAL(7,2),
+    deptno   INT,
+    FOREIGN KEY (deptno) REFERENCES department(deptno)
+);
+```
+
+---
+
+### ✅ STEP 5 – Insert into DEPARTMENT
+
+**Aim:** To insert department records.  
+**Requirement:** Department table.  
+**Theory:** INSERT adds rows.  
+**Query:**
+```sql
+INSERT INTO department VALUES (10,'RESEARCH');
+INSERT INTO department VALUES (20,'ACCOUNTING');
+INSERT INTO department VALUES (30,'SALES');
+INSERT INTO department VALUES (40,'OPERATIONS');
+```
+
+---
+
+### ✅ STEP 6 – Insert into EMPLOYEE
+
+**Aim:** To insert employee records.  
+**Requirement:** Employee table.  
+**Theory:** Data is inserted row-wise.  
+**Query:**
+```sql
+INSERT INTO employee VALUES (7369,'SMITH','CLERK',7902,'1980-12-17',800,NULL,20);
+INSERT INTO employee VALUES (7499,'ALLEN','SALESMAN',7698,'1981-02-20',1600,300,30);
+INSERT INTO employee VALUES (7521,'WARD','SALESMAN',7698,'1981-02-22',1250,300,30);
+INSERT INTO employee VALUES (7566,'JONES','MANAGER',7839,'1981-04-02',2975,NULL,20);
+INSERT INTO employee VALUES (7654,'MARTIN','SALESMAN',7698,'1981-09-28',1250,1400,30);
+INSERT INTO employee VALUES (7698,'BLAKE','MANAGER',7839,'1981-05-01',2850,NULL,30);
+INSERT INTO employee VALUES (7782,'CLARK','MANAGER',7839,'1981-06-09',2450,NULL,20);
+INSERT INTO employee VALUES (7788,'SCOTT','ANALYST',7566,'1982-12-09',3000,NULL,40);
+INSERT INTO employee VALUES (7839,'KING','PRESIDENT',NULL,'1981-11-17',5000,NULL,20);
+INSERT INTO employee VALUES (7844,'TURNER','SALESMAN',7698,'1981-09-08',1500,0,30);
+INSERT INTO employee VALUES (7876,'ADAMS','CLERK',7788,'1983-01-12',1100,NULL,20);
+INSERT INTO employee VALUES (7900,'JAMES','CLERK',7698,'1981-12-03',950,NULL,30);
+INSERT INTO employee VALUES (7902,'FORD','ANALYST',7566,'1981-12-03',3000,NULL,20);
+INSERT INTO employee VALUES (7934,'MILLER','CLERK',7782,'1982-01-23',1300,NULL,10);
+```
+
+---
+
+### ✅ STEP 7 – Display Data
+
+**Aim:** To view inserted records.  
+**Requirement:** Tables populated.  
+**Theory:** SELECT retrieves data.  
+**Query:**
+```sql
+SELECT * FROM employee;
+SELECT * FROM department;
+```
+
+---
+
+## Experiment 2 – Basic Retrieval Queries
+
+### 1. List all distinct jobs
+
+**Aim:** To display unique job roles.  
+**Requirement:** Employee table with job column.  
+**Theory:** DISTINCT removes duplicate values.  
+**Query:**
+```sql
+SELECT DISTINCT job FROM employee;
+```
+
+---
+
+### 2. Employees in department 30
+
+**Aim:** To display employees working in department 30.  
+**Requirement:** Employee table with deptno.  
+**Theory:** WHERE filters records.  
+**Query:**
+```sql
+SELECT * FROM employee
+WHERE deptno = 30;
+```
+
+---
+
+### 3. Departments greater than 20
+
+**Aim:** To display department numbers and names greater than 20.  
+**Requirement:** Department table.  
+**Theory:** Comparison operators filter numeric values.  
+**Query:**
+```sql
+SELECT deptno, dname
+FROM department
+WHERE deptno > 20;
+```
+
+---
+
+### 4. Managers and clerks in dept 30
+
+**Aim:** To display managers and clerks in department 30.  
+**Requirement:** Employee table.  
+**Theory:** IN operator checks multiple values.  
+**Query:**
+```sql
+SELECT *
+FROM employee
+WHERE deptno = 30
+AND job IN ('MANAGER','CLERK');
+```
+
+---
+
+### 5. Clerk details
+
+**Aim:** To display name, number and department of clerks.  
+**Requirement:** Employee table.  
+**Theory:** SELECT specific columns.  
+**Query:**
+```sql
+SELECT ename, empno, deptno
+FROM employee
+WHERE job = 'CLERK';
+```
+
+---
+
+### 6. Managers not in dept 30
+
+**Aim:** To display managers excluding department 30.  
+**Requirement:** Employee table.  
+**Theory:** `<>` means NOT EQUAL.  
+**Query:**
+```sql
+SELECT *
+FROM employee
+WHERE job = 'MANAGER'
+AND deptno <> 30;
+```
+
+---
+
+### 7. Dept 10 employees not manager/clerk
+
+**Aim:** To display employees of dept 10 excluding managers and clerks.  
+**Requirement:** Employee table.  
+**Theory:** NOT IN excludes values.  
+**Query:**
+```sql
+SELECT *
+FROM employee
+WHERE deptno = 10
+AND job NOT IN ('MANAGER','CLERK');
+```
+
+---
+
+### 8. Salary between 1200 and 1400
+
+**Aim:** To find employees earning in given range.  
+**Requirement:** Salary column.  
+**Theory:** BETWEEN filters range values.  
+**Query:**
+```sql
+SELECT ename, job
+FROM employee
+WHERE sal BETWEEN 1200 AND 1400;
+```
+
+---
+
+### 9. Clerk, Analyst or Salesman
+
+**Aim:** To display employees with specific job roles.  
+**Requirement:** Employee job column.  
+**Theory:** IN operator matches multiple values.  
+**Query:**
+```sql
+SELECT ename, deptno
+FROM employee
+WHERE job IN ('CLERK','ANALYST','SALESMAN');
+```
+
+---
+
+## Experiment 3 – Sorting & Pattern Matching
+
+### 1. Employees sorted by salary (descending)
+
+**Aim:** To list employees in decreasing order of salary.  
+**Requirement:** Employee salary column.  
+**Theory:** ORDER BY sorts results; DESC for descending.  
+**Query:**
+```sql
+SELECT * FROM employee
+ORDER BY sal DESC;
+```
+
+---
+
+### 2. Employees whose name starts with 'S'
+
+**Aim:** To find employees whose name begins with letter S.  
+**Requirement:** Employee name column.  
+**Theory:** LIKE with `%` is a wildcard pattern match.  
+**Query:**
+```sql
+SELECT * FROM employee
+WHERE ename LIKE 'S%';
+```
+
+---
+
+### 3. Employees whose name ends with 'S'
+
+**Aim:** To find employees whose name ends with letter S.  
+**Requirement:** Employee name column.  
+**Theory:** `%S` matches any name ending in S.  
+**Query:**
+```sql
+SELECT * FROM employee
+WHERE ename LIKE '%S';
+```
+
+---
+
+### 4. Employees with exactly 5-letter names
+
+**Aim:** To find employees with names of exactly 5 characters.  
+**Requirement:** Employee name column.  
+**Theory:** Underscore `_` matches exactly one character.  
+**Query:**
+```sql
+SELECT * FROM employee
+WHERE ename LIKE '_____';
+```
+
+---
+
+## Experiment 4 – Conditional & Date Queries
+
+### 1. Employees hired after 1981
+
+**Aim:** To find employees hired after a given year.  
+**Requirement:** hiredate column.  
+**Theory:** Date comparisons use standard operators.  
+**Query:**
+```sql
+SELECT * FROM employee
+WHERE hiredate > '1981-12-31';
+```
+
+---
+
+### 2. Display employee with annual salary
+
+**Aim:** To compute annual salary for each employee.  
+**Requirement:** sal column.  
+**Theory:** Arithmetic expressions can be used in SELECT.  
+**Query:**
+```sql
+SELECT ename, sal*12 AS annual_salary
+FROM employee;
+```
+
+---
+
+## Experiment 5 – Aggregate & String Functions
+
+### 1. Total salary of all employees
+
+**Aim:** To compute sum of all salaries.  
+**Requirement:** sal column.  
+**Theory:** SUM() is an aggregate function.  
+**Query:**
+```sql
+SELECT SUM(sal) FROM employee;
+```
+
+---
+
+### 2. Maximum and minimum salary
+
+**Aim:** To find highest and lowest salary.  
+**Requirement:** sal column.  
+**Theory:** MAX() and MIN() return extreme values.  
+**Query:**
+```sql
+SELECT MAX(sal), MIN(sal) FROM employee;
+```
+
+---
+
+### 3. Count of employees
+
+**Aim:** To count total number of employees.  
+**Requirement:** Employee table.  
+**Theory:** COUNT() counts rows.  
+**Query:**
+```sql
+SELECT COUNT(*) FROM employee;
+```
+
+---
+
+### 4. Average salary
+
+**Aim:** To find average salary of all employees.  
+**Requirement:** sal column.  
+**Theory:** AVG() computes arithmetic mean.  
+**Query:**
+```sql
+SELECT AVG(sal) FROM employee;
+```
+
+---
+
+### 5. Uppercase employee names
+
+**Aim:** To display names in uppercase.  
+**Requirement:** ename column.  
+**Theory:** UPPER() converts text to uppercase.  
+**Query:**
+```sql
+SELECT UPPER(ename) FROM employee;
+```
+
+---
+
+### 6. Length of employee names
+
+**Aim:** To find the character length of each name.  
+**Requirement:** ename column.  
+**Theory:** LENGTH() returns string length.  
+**Query:**
+```sql
+SELECT ename, LENGTH(ename) FROM employee;
+```
+
+---
+
+## Experiment 6 – Date & Formatting Functions
+
+### 1. Current date and time
+
+**Aim:** To display current system date and time.  
+**Requirement:** MySQL environment.  
+**Theory:** NOW() returns current datetime.  
+**Query:**
+```sql
+SELECT NOW();
+```
+
+---
+
+### 2. Extract year from hiredate
+
+**Aim:** To extract year part from hire date.  
+**Requirement:** hiredate column.  
+**Theory:** YEAR() extracts year component.  
+**Query:**
+```sql
+SELECT ename, YEAR(hiredate) FROM employee;
+```
+
+---
+
+### 3. Format salary with 2 decimal places
+
+**Aim:** To display salary formatted to 2 decimal places.  
+**Requirement:** sal column.  
+**Theory:** FORMAT() formats numeric values.  
+**Query:**
+```sql
+SELECT ename, FORMAT(sal, 2) FROM employee;
+```
+
+---
+
+## Experiment 7 – Advanced Aggregation
+
+### 1. Count employees per department
+
+**Aim:** To count employees in each department.  
+**Requirement:** Employee table.  
+**Theory:** GROUP BY groups rows sharing a value.  
+**Query:**
+```sql
+SELECT deptno, COUNT(*) AS emp_count
+FROM employee
+GROUP BY deptno;
+```
+
+---
+
+### 2. Average salary per department
+
+**Aim:** To find average salary by department.  
+**Requirement:** Employee table.  
+**Theory:** AVG() combined with GROUP BY.  
+**Query:**
+```sql
+SELECT deptno, AVG(sal)
+FROM employee
+GROUP BY deptno;
+```
+
+---
+
+### 3. Departments with average salary > 2000
+
+**Aim:** To filter departments with high average salary.  
+**Requirement:** Employee table.  
+**Theory:** HAVING filters grouped results.  
+**Query:**
+```sql
+SELECT deptno, AVG(sal)
+FROM employee
+GROUP BY deptno
+HAVING AVG(sal) > 2000;
+```
+
+---
+
+## Experiment 8 – Joins
+
+### 1. Inner Join – Employee with Department name
+
+**Aim:** To display employee names along with their department names.  
+**Requirement:** Employee and Department tables.  
+**Theory:** INNER JOIN returns matching rows from both tables.  
+**Query:**
+```sql
+SELECT e.ename, d.dname
+FROM employee e
+INNER JOIN department d ON e.deptno = d.deptno;
+```
+
+---
+
+### 2. Left Join – All employees including those without departments
+
+**Aim:** To include all employees even if no matching department.  
+**Requirement:** Employee and Department tables.  
+**Theory:** LEFT JOIN returns all rows from left table.  
+**Query:**
+```sql
+SELECT e.ename, d.dname
+FROM employee e
+LEFT JOIN department d ON e.deptno = d.deptno;
+```
+
+---
+
+### 3. Self Join – Employee and their Manager
+
+**Aim:** To display each employee along with their manager's name.  
+**Requirement:** Employee table (mgr references empno).  
+**Theory:** Self join treats one table as two.  
+**Query:**
+```sql
+SELECT e.ename AS employee, m.ename AS manager
+FROM employee e
+LEFT JOIN employee m ON e.mgr = m.empno;
+```
+
+---
+
+## Experiment 9 – Subqueries
+
+### 1. Employees earning more than average salary
+
+**Aim:** To find employees with above-average salary.  
+**Requirement:** Employee table.  
+**Theory:** Subquery provides a value for the outer query.  
+**Query:**
+```sql
+SELECT ename, sal
+FROM employee
+WHERE sal > (SELECT AVG(sal) FROM employee);
+```
+
+---
+
+### 2. Employees in the same department as SCOTT
+
+**Aim:** To list employees sharing SCOTT's department.  
+**Requirement:** Employee table.  
+**Theory:** Subquery fetches dept of a specific employee.  
+**Query:**
+```sql
+SELECT ename
+FROM employee
+WHERE deptno = (SELECT deptno FROM employee WHERE ename = 'SCOTT');
+```
+
+---
+
+## Experiment 10 – ANY, ALL, Nested Queries
+
+### 1. Employees earning more than ANY salesman
+
+**Aim:** To display employees earning more than at least one salesman.  
+**Requirement:** Employee table.  
+**Theory:** ANY returns true if any value in subquery matches.  
+**Query:**
+```sql
+SELECT ename, sal
+FROM employee
+WHERE sal > ANY (SELECT sal FROM employee WHERE job = 'SALESMAN');
+```
+
+---
+
+### 2. Employees earning more than ALL salesmen
+
+**Aim:** To display employees earning more than every salesman.  
+**Requirement:** Employee table.  
+**Theory:** ALL returns true only if all values match.  
+**Query:**
+```sql
+SELECT ename, sal
+FROM employee
+WHERE sal > ALL (SELECT sal FROM employee WHERE job = 'SALESMAN');
+```
+
+---
+
+## Experiment 11 – Subqueries (Advanced)
+
+### 1. Department with highest average salary
+
+**Aim:** To find the department offering the highest average pay.  
+**Requirement:** Employee table.  
+**Theory:** Nested subquery with MAX on grouped data.  
+**Query:**
+```sql
+SELECT deptno
+FROM employee
+GROUP BY deptno
+HAVING AVG(sal) = (
+    SELECT MAX(avg_sal)
+    FROM (SELECT AVG(sal) AS avg_sal FROM employee GROUP BY deptno) AS t
+);
+```
+
+---
+
+### 2. Employees with no commission
+
+**Aim:** To list employees who have NULL commission.  
+**Requirement:** comm column.  
+**Theory:** IS NULL checks for null values.  
+**Query:**
+```sql
+SELECT ename
+FROM employee
+WHERE comm IS NULL;
+```
+
+---
+
+## Experiment 12 – Advanced Integrity & Real-world Queries
+
+### 1. Add a new column to employee
+
+**Aim:** To alter table structure.  
+**Requirement:** Employee table.  
+**Theory:** ALTER TABLE modifies existing table.  
+**Query:**
+```sql
+ALTER TABLE employee ADD COLUMN email VARCHAR(50);
+```
+
+---
+
+### 2. Update salary for a department
+
+**Aim:** To give a 10% raise to department 20.  
+**Requirement:** Employee table.  
+**Theory:** UPDATE modifies existing rows.  
+**Query:**
+```sql
+UPDATE employee
+SET sal = sal * 1.10
+WHERE deptno = 20;
+```
+
+---
+
+### 3. Delete employees with low salary
+
+**Aim:** To remove employees earning below 1000.  
+**Requirement:** Employee table.  
+**Theory:** DELETE removes rows meeting the condition.  
+**Query:**
+```sql
+DELETE FROM employee
+WHERE sal < 1000;
+```
+
+---
+
+### 4. Create a View
+
+**Aim:** To create a virtual table showing only managers.  
+**Requirement:** Employee table.  
+**Theory:** VIEW stores a SELECT query as a reusable object.  
+**Query:**
+```sql
+CREATE VIEW managers AS
+SELECT empno, ename, deptno
+FROM employee
+WHERE job = 'MANAGER';
+```
+
+---
+
+### 5. Create an Index
+
+**Aim:** To speed up queries on ename column.  
+**Requirement:** Employee table.  
+**Theory:** INDEX improves data retrieval performance.  
+**Query:**
+```sql
+CREATE INDEX idx_ename ON employee(ename);
+```
+
+---
+
+*Prepared by: **Divyansh Srivastava** | Roll No: **2CSE17G1_270***
 

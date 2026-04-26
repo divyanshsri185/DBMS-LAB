@@ -1,0 +1,1016 @@
+[README.md](https://github.com/user-attachments/files/27104852/README.md)# 🗄️ DBMS LAB
+
+### **Name:** Divyansh Srivastava &nbsp;|&nbsp; **Roll No:** 2CSE17G1_270  
+### **Course:** UCS4001 – Database Management System  
+
+---
+
+## 📋 Table of Contents
+
+| Experiment | Topic |
+|:---:|---|
+| [1](#experiment-1--database--table-creation) | Database & Table Creation |
+| [2](#experiment-2--basic-retrieval-queries) | Basic Retrieval Queries |
+| [3](#experiment-3--sorting-pattern-matching--conditional-queries) | Sorting, Pattern Matching & Conditional Queries |
+| [4](#experiment-4--date-functions--advanced-conditions) | Date Functions & Advanced Conditions |
+| [5](#experiment-5--aggregate--string-functions) | Aggregate & String Functions |
+| [6](#experiment-6--date--formatting-functions) | Date & Formatting Functions |
+| [7](#experiment-7--advanced-aggregation--group-functions) | Advanced Aggregation & Group Functions |
+| [8](#experiment-8--joins) | Joins |
+| [9](#experiment-9--subqueries) | Subqueries |
+| [10](#experiment-10--any-all--nested-queries) | ANY, ALL & Nested Queries |
+| [11](#experiment-11--advanced-subqueries--dml-operations) | Advanced Subqueries & DML Operations |
+| [12](#experiment-12--advanced-integrity--real-world-queries) | Advanced Integrity & Real-world Queries |
+
+---
+
+## 📌 Base Tables Used Throughout
+
+### EMPLOYEE Table
+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
+|-------|--------|-----------|------|------------|------|------|--------|
+| 7369  | SMITH  | CLERK     | 7902 | 17-Dec-80  | 800  | NULL | 20     |
+| 7499  | ALLEN  | SALESMAN  | 7698 | 20-Feb-81  | 1600 | 300  | 30     |
+| 7521  | WARD   | SALESMAN  | 7698 | 22-Feb-81  | 1250 | 300  | 30     |
+| 7566  | JONES  | MANAGER   | 7839 | 02-Apr-81  | 2975 | NULL | 20     |
+| 7654  | MARTIN | SALESMAN  | 7698 | 28-Sep-81  | 1250 | 1400 | 30     |
+| 7698  | BLAKE  | MANAGER   | 7839 | 01-May-81  | 2850 | NULL | 30     |
+| 7782  | CLARK  | MANAGER   | 7839 | 09-Jun-81  | 2450 | NULL | 20     |
+| 7788  | SCOTT  | ANALYST   | 7566 | 09-Dec-82  | 3000 | NULL | 40     |
+| 7839  | KING   | PRESIDENT | NULL | 17-Nov-81  | 5000 | NULL | 20     |
+| 7844  | TURNER | SALESMAN  | 7698 | 08-Sep-81  | 1500 | 0    | 30     |
+| 7876  | ADAMS  | CLERK     | 7788 | 12-Jan-83  | 1100 | NULL | 20     |
+| 7900  | JAMES  | CLERK     | 7698 | 03-Dec-81  | 950  | NULL | 30     |
+| 7902  | FORD   | ANALYST   | 7566 | 03-Dec-81  | 3000 | NULL | 20     |
+| 7934  | MILLER | CLERK     | 7782 | 23-Jan-82  | 1300 | NULL | 10     |
+
+### DEPARTMENT Table
+
+| DEPTNO | DNAME      |
+|--------|------------|
+| 10     | RESEARCH   |
+| 20     | ACCOUNTING |
+| 30     | SALES      |
+| 40     | OPERATIONS |
+
+---
+
+## Experiment 1 – Database & Table Creation
+
+**Aim:** To create a database, define tables with constraints, insert data, and perform basic DDL and DML operations.  
+**Requirement:** MySQL/MariaDB environment.  
+**Theory:** A database stores tables and related data. DDL commands (CREATE, ALTER, DROP) define schema. DML commands (INSERT, UPDATE, DELETE) manipulate data. Constraints like PRIMARY KEY, NOT NULL, and FOREIGN KEY ensure data integrity.
+
+---
+
+### ✅ STEP 1 – Create Database
+
+```sql
+CREATE DATABASE 2cse17g1_270;
+```
+
+### ✅ STEP 2 – Use Database
+
+```sql
+USE 2cse17g1_270;
+```
+
+### ✅ STEP 3 – Create DEPARTMENT Table
+
+```sql
+CREATE TABLE department (
+    deptno INT PRIMARY KEY,
+    dname  VARCHAR(15) NOT NULL
+);
+```
+
+### ✅ STEP 4 – Create EMPLOYEE Table
+
+```sql
+CREATE TABLE employee (
+    empno    INT         PRIMARY KEY,
+    ename    VARCHAR(20) NOT NULL,
+    job      VARCHAR(20),
+    mgr      INT,
+    hiredate DATE,
+    sal      DECIMAL(10,2),
+    comm     DECIMAL(7,2),
+    deptno   INT,
+    FOREIGN KEY (deptno) REFERENCES department(deptno)
+);
+```
+
+### ✅ STEP 5 – Insert into DEPARTMENT
+
+```sql
+INSERT INTO department VALUES (10, 'RESEARCH');
+INSERT INTO department VALUES (20, 'ACCOUNTING');
+INSERT INTO department VALUES (30, 'SALES');
+INSERT INTO department VALUES (40, 'OPERATIONS');
+```
+
+### ✅ STEP 6 – Insert into EMPLOYEE
+
+```sql
+INSERT INTO employee VALUES (7369,'SMITH','CLERK',7902,'1980-12-17',800,NULL,20);
+INSERT INTO employee VALUES (7499,'ALLEN','SALESMAN',7698,'1981-02-20',1600,300,30);
+INSERT INTO employee VALUES (7521,'WARD','SALESMAN',7698,'1981-02-22',1250,300,30);
+INSERT INTO employee VALUES (7566,'JONES','MANAGER',7839,'1981-04-02',2975,NULL,20);
+INSERT INTO employee VALUES (7654,'MARTIN','SALESMAN',7698,'1981-09-28',1250,1400,30);
+INSERT INTO employee VALUES (7698,'BLAKE','MANAGER',7839,'1981-05-01',2850,NULL,30);
+INSERT INTO employee VALUES (7782,'CLARK','MANAGER',7839,'1981-06-09',2450,NULL,20);
+INSERT INTO employee VALUES (7788,'SCOTT','ANALYST',7566,'1982-12-09',3000,NULL,40);
+INSERT INTO employee VALUES (7839,'KING','PRESIDENT',NULL,'1981-11-17',5000,NULL,20);
+INSERT INTO employee VALUES (7844,'TURNER','SALESMAN',7698,'1981-09-08',1500,0,30);
+INSERT INTO employee VALUES (7876,'ADAMS','CLERK',7788,'1983-01-12',1100,NULL,20);
+INSERT INTO employee VALUES (7900,'JAMES','CLERK',7698,'1981-12-03',950,NULL,30);
+INSERT INTO employee VALUES (7902,'FORD','ANALYST',7566,'1981-12-03',3000,NULL,20);
+INSERT INTO employee VALUES (7934,'MILLER','CLERK',7782,'1982-01-23',1300,NULL,10);
+```
+
+### ✅ STEP 7 – Employee_master Operations
+
+**1. Create Employee_master table with data using Employee table:**
+```sql
+CREATE TABLE Employee_master AS SELECT * FROM employee;
+```
+
+**2. Delete all records from Employee_master where DeptNo is 10:**
+```sql
+DELETE FROM Employee_master WHERE deptno = 10;
+```
+
+**3. Update salary by 10% for employees in DeptNo 20:**
+```sql
+UPDATE Employee_master SET sal = sal * 1.10 WHERE deptno = 20;
+```
+
+**4. Alter SAL column size to DECIMAL(10,2):**
+```sql
+ALTER TABLE Employee_master MODIFY sal DECIMAL(10,2);
+```
+
+**5. Drop Employee_master Table:**
+```sql
+DROP TABLE Employee_master;
+```
+
+### ✅ STEP 8 – Display Data
+
+```sql
+SELECT * FROM employee;
+SELECT * FROM department;
+```
+
+---
+
+## Experiment 2 – Basic Retrieval Queries
+
+**Aim:** To retrieve data from the employee and department tables using various filtering conditions.  
+**Theory:** The SELECT statement retrieves data. WHERE clause filters rows. Operators like IN, NOT IN, BETWEEN, and comparison operators refine results. DISTINCT eliminates duplicate values.
+
+---
+
+**Q1. List all distinct jobs in Employee.**
+```sql
+SELECT DISTINCT job FROM employee;
+```
+
+**Q2. List all information about employees in Department Number 30.**
+```sql
+SELECT * FROM employee WHERE deptno = 30;
+```
+
+**Q3. Find all department numbers with department names greater than 20.**
+```sql
+SELECT deptno, dname FROM department WHERE deptno > 20;
+```
+
+**Q4. Find all information about all managers as well as clerks in department 30.**
+```sql
+SELECT * FROM employee
+WHERE deptno = 30 AND job IN ('MANAGER', 'CLERK');
+```
+
+**Q5. List the Employee name, Employee numbers and department of all clerks.**
+```sql
+SELECT ename, empno, deptno FROM employee WHERE job = 'CLERK';
+```
+
+**Q6. Find all managers not in department 30.**
+```sql
+SELECT * FROM employee WHERE job = 'MANAGER' AND deptno <> 30;
+```
+
+**Q7. List information about all employees in department 10 who are not manager or clerks.**
+```sql
+SELECT * FROM employee
+WHERE deptno = 10 AND job NOT IN ('MANAGER', 'CLERK');
+```
+
+**Q8. Find Employees and jobs earning between 1200 and 1400.**
+```sql
+SELECT ename, job FROM employee WHERE sal BETWEEN 1200 AND 1400;
+```
+
+**Q9. List Name and Department Number of employees who are clerks, analyst or salesman.**
+```sql
+SELECT ename, deptno FROM employee
+WHERE job IN ('CLERK', 'ANALYST', 'SALESMAN');
+```
+
+**Q10. List Name and Department Number of employees whose names began with M.**
+```sql
+SELECT ename, deptno FROM employee WHERE ename LIKE 'M%';
+```
+
+---
+
+## Experiment 3 – Sorting, Pattern Matching & Conditional Queries
+
+**Aim:** To apply sorting, LIKE pattern matching, and arithmetic expressions on employee data.  
+**Theory:** ORDER BY sorts query results (ASC by default, DESC for reverse). LIKE uses `%` (any sequence of characters) and `_` (single character) as wildcards. Arithmetic expressions can compute new derived columns directly in SELECT.
+
+---
+
+**Q1. List all employees and jobs in Department 30 in descending order by salary.**
+```sql
+SELECT ename, job FROM employee WHERE deptno = 30 ORDER BY sal DESC;
+```
+
+**Q2. List job and Department Number of employees whose names are five letters long, begin with "A" and end with "N".**
+```sql
+SELECT job, deptno FROM employee WHERE ename LIKE 'A___N';
+```
+
+**Q3. Display the names of employees whose name starts with alphabet S.**
+```sql
+SELECT ename FROM employee WHERE ename LIKE 'S%';
+```
+
+**Q4. Display the names of employees whose name ends with alphabet S.**
+```sql
+SELECT ename FROM employee WHERE ename LIKE '%S';
+```
+
+**Q5. Display names of employees working in dept 10, 20, or 40 or working as clerks, salesman or analyst.**
+```sql
+SELECT ename FROM employee
+WHERE deptno IN (10, 20, 40) OR job IN ('CLERK', 'SALESMAN', 'ANALYST');
+```
+
+**Q6. Display employee number and names for employees who earn commission.**
+```sql
+SELECT empno, ename FROM employee WHERE comm IS NOT NULL AND comm > 0;
+```
+
+**Q7. Display employee number and total salary for each employee.**
+```sql
+SELECT empno, ename, sal + IFNULL(comm, 0) AS total_salary FROM employee;
+```
+
+**Q8. Display employee number and annual salary for each employee.**
+```sql
+SELECT empno, ename, sal * 12 AS annual_salary FROM employee;
+```
+
+**Q9. Display names of all employees working as clerks and drawing a salary more than 3000.**
+```sql
+SELECT ename FROM employee WHERE job = 'CLERK' AND sal > 3000;
+```
+
+**Q10. Display names of employees working as clerk, salesman or analyst and drawing salary more than 3000.**
+```sql
+SELECT ename FROM employee
+WHERE job IN ('CLERK', 'SALESMAN', 'ANALYST') AND sal > 3000;
+```
+
+---
+
+## Experiment 4 – Date Functions & Advanced Conditions
+
+**Aim:** To use date-based filtering, positional character matching, derived salary calculations, and conditional updates.  
+**Theory:** MySQL supports DATE comparisons using standard operators. LIKE with positional underscores enables character-level matching. LENGTH() returns string length. Arithmetic expressions derive new values like annual salary or allowances.
+
+---
+
+**Q1. Display employees who joined before 30th June 1980 or after 31st Dec 1981.**
+```sql
+SELECT * FROM employee
+WHERE hiredate < '1980-06-30' OR hiredate > '1981-12-31';
+```
+
+**Q2. Display names of employees whose second alphabet is A.**
+```sql
+SELECT ename FROM employee WHERE ename LIKE '_A%';
+```
+
+**Q3. Display names of employees whose name is exactly five characters long.**
+```sql
+SELECT ename FROM employee WHERE LENGTH(ename) = 5;
+```
+
+**Q4. Display names of employees whose names have second alphabet A. (same as Q2)**
+```sql
+SELECT ename FROM employee WHERE ename LIKE '_A%';
+```
+
+**Q5. Display names of employees who are not working as salesman or clerk or analyst.**
+```sql
+SELECT ename FROM employee WHERE job NOT IN ('SALESMAN', 'CLERK', 'ANALYST');
+```
+
+**Q6. Display employee names along with annual salary; highest salary first.**
+```sql
+SELECT ename, sal * 12 AS annual_salary FROM employee ORDER BY annual_salary DESC;
+```
+
+**Q7. Display name, sal, hra (15%), da (10%), pf (5%), totalsal = (sal+hra+da)-pf.**
+```sql
+SELECT ename,
+       sal,
+       sal * 0.15 AS hra,
+       sal * 0.10 AS da,
+       sal * 0.05 AS pf,
+       (sal + sal*0.15 + sal*0.10) - sal*0.05 AS totalsal
+FROM employee ORDER BY totalsal;
+```
+
+**Q8. Update salary by 10% for employees not eligible for commission.**
+```sql
+UPDATE employee SET sal = sal * 1.10 WHERE comm IS NULL OR comm = 0;
+```
+
+**Q9. Display employees whose salary is more than 3000 after 20% increment.**
+```sql
+SELECT ename, sal, sal * 1.20 AS new_salary
+FROM employee WHERE sal * 1.20 > 3000;
+```
+
+**Q10. Display employees whose salary contains at least 3 digits.**
+```sql
+SELECT ename, sal FROM employee WHERE sal >= 100;
+```
+
+---
+
+## Experiment 5 – Aggregate & String Functions
+
+**Aim:** To apply aggregate functions (COUNT, SUM, MAX, MIN, AVG) and string functions (UPPER, LOWER, LENGTH) on the employee table.  
+**Theory:** Aggregate functions operate on a set of rows and return a single value. String functions manipulate text values. GROUP BY with aggregate functions enables grouped calculations.
+
+---
+
+**Q1. Display the total number of employees working in the company.**
+```sql
+SELECT COUNT(*) AS total_employees FROM employee;
+```
+
+**Q2. Display the total salary being paid to all employees.**
+```sql
+SELECT SUM(sal) AS total_salary FROM employee;
+```
+
+**Q3. Display the maximum salary from employee table.**
+```sql
+SELECT MAX(sal) AS max_salary FROM employee;
+```
+
+**Q4. Display the minimum salary from employee table.**
+```sql
+SELECT MIN(sal) AS min_salary FROM employee;
+```
+
+**Q5. Display the average salary from employee table.**
+```sql
+SELECT AVG(sal) AS avg_salary FROM employee;
+```
+
+**Q6. Display the maximum salary being paid to a clerk.**
+```sql
+SELECT MAX(sal) AS max_clerk_salary FROM employee WHERE job = 'CLERK';
+```
+
+**Q7. Display the maximum salary being paid in dept no 20.**
+```sql
+SELECT MAX(sal) AS max_salary_dept20 FROM employee WHERE deptno = 20;
+```
+
+**Q8. Display the minimum salary paid to any salesman.**
+```sql
+SELECT MIN(sal) AS min_salesman_salary FROM employee WHERE job = 'SALESMAN';
+```
+
+**Q9. Display the average salary drawn by managers.**
+```sql
+SELECT AVG(sal) AS avg_manager_salary FROM employee WHERE job = 'MANAGER';
+```
+
+**Q10. Display the total salary drawn by analysts working in dept no 40.**
+```sql
+SELECT SUM(sal) AS total_analyst_salary
+FROM employee WHERE job = 'ANALYST' AND deptno = 40;
+```
+
+**Q11. Display the names of the employee in Uppercase.**
+```sql
+SELECT UPPER(ename) AS name_upper FROM employee;
+```
+
+**Q12. Display the names of the employee in Lowercase.**
+```sql
+SELECT LOWER(ename) AS name_lower FROM employee;
+```
+
+**Q13. Display the names of the employee in Proper case.**
+```sql
+SELECT CONCAT(UPPER(LEFT(ename,1)), LOWER(SUBSTRING(ename,2))) AS name_proper
+FROM employee;
+```
+
+**Q14. Display the length of your name using appropriate function.**
+```sql
+SELECT LENGTH('DIVYANSH') AS name_length;
+```
+
+**Q15. Display the length of all the employee names.**
+```sql
+SELECT ename, LENGTH(ename) AS name_length FROM employee;
+```
+
+---
+
+## Experiment 6 – Date & Formatting Functions
+
+**Aim:** To use MySQL date and formatting functions to extract, display, and manipulate date components.  
+**Theory:** MySQL provides NOW(), CURDATE(), CURTIME(), YEAR(), MONTH(), DAY(), DATEDIFF(), TIMESTAMPDIFF(), DATE_FORMAT(), and DATE_ADD()/DATE_SUB(). CASE WHEN serves as MySQL's equivalent of Oracle's DECODE function.
+
+---
+
+**Q1. Display empno, ename, dept name instead of deptno (Use CASE/DECODE).**
+```sql
+SELECT empno, ename,
+       CASE deptno
+           WHEN 10 THEN 'RESEARCH'
+           WHEN 20 THEN 'ACCOUNTING'
+           WHEN 30 THEN 'SALES'
+           WHEN 40 THEN 'OPERATIONS'
+           ELSE 'UNKNOWN'
+       END AS dept_name
+FROM employee;
+```
+
+**Q2. Display your age in days.**
+```sql
+SELECT DATEDIFF(CURDATE(), '2004-01-01') AS age_in_days;
+```
+
+**Q3. Display your age in months.**
+```sql
+SELECT TIMESTAMPDIFF(MONTH, '2004-01-01', CURDATE()) AS age_in_months;
+```
+
+**Q4. Display the current date formatted.**
+```sql
+SELECT DATE_FORMAT(CURDATE(), '%D %M %W %Y') AS formatted_date;
+```
+
+**Q5. Display output: "[ENAME] has joined the company on [Day Date Month Year]".**
+```sql
+SELECT CONCAT(ename, ' has joined the company on ',
+              DATE_FORMAT(hiredate, '%W %D %M %Y')) AS join_statement
+FROM employee;
+```
+
+**Q6. Scott has joined the company on — display his join info.**
+```sql
+SELECT ename, DATE_FORMAT(hiredate, '%W %D %M %Y') AS join_date
+FROM employee WHERE ename = 'SCOTT';
+```
+
+**Q7. Find the date of the nearest Saturday after current date.**
+```sql
+SELECT DATE_ADD(CURDATE(),
+       INTERVAL (6 - WEEKDAY(CURDATE()) + 7) % 7 DAY) AS next_saturday;
+```
+
+**Q8. Display current time.**
+```sql
+SELECT CURTIME() AS current_time;
+```
+
+**Q9. Display the date three months before the current date.**
+```sql
+SELECT DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AS three_months_ago;
+```
+
+**Q10. Display employees who joined in the month of December.**
+```sql
+SELECT ename, hiredate FROM employee WHERE MONTH(hiredate) = 12;
+```
+
+**Q11. Display employees whose first 2 characters of hiredate = last 2 characters of salary.**
+```sql
+SELECT ename FROM employee
+WHERE LEFT(DATE_FORMAT(hiredate, '%d'), 2) = RIGHT(FLOOR(sal), 2);
+```
+
+**Q12. Display employees whose 10% of salary equals the year of joining.**
+```sql
+SELECT ename, sal, YEAR(hiredate)
+FROM employee WHERE sal * 0.10 = YEAR(hiredate);
+```
+
+**Q13. Display employees who joined before 15th of the month.**
+```sql
+SELECT ename, hiredate FROM employee WHERE DAY(hiredate) < 15;
+```
+
+**Q14. Display those employees who have joined before 15th of the month. (same as Q13)**
+```sql
+SELECT ename, hiredate FROM employee WHERE DAY(hiredate) < 15;
+```
+
+**Q15. Display employees whose joining date (day) is available in deptno.**
+```sql
+SELECT ename, hiredate, deptno FROM employee WHERE DAY(hiredate) = deptno;
+```
+
+---
+
+## Experiment 7 – Advanced Aggregation & Group Functions
+
+**Aim:** To use GROUP BY, HAVING, and complex aggregation to summarize and analyze employee data.  
+**Theory:** GROUP BY groups rows sharing the same value. HAVING filters grouped results (unlike WHERE which filters rows). Aggregate functions like COUNT, SUM, MAX, MIN, AVG operate per group. CASE WHEN inside SUM creates pivot-style matrix queries.
+
+---
+
+**Q1. Compute the number of days remaining in this year.**
+```sql
+SELECT DATEDIFF(DATE(CONCAT(YEAR(CURDATE()), '-12-31')), CURDATE()) AS days_remaining;
+```
+
+**Q2. Find the highest and lowest salaries and the difference between them.**
+```sql
+SELECT MAX(sal) AS highest, MIN(sal) AS lowest, MAX(sal) - MIN(sal) AS difference
+FROM employee;
+```
+
+**Q3. List employees whose commission is greater than 25% of their salaries.**
+```sql
+SELECT ename, sal, comm FROM employee WHERE comm > sal * 0.25;
+```
+
+**Q4. Make a query that displays salary in dollar format.**
+```sql
+SELECT ename, CONCAT('$', FORMAT(sal, 2)) AS salary_in_dollars FROM employee;
+```
+
+**Q5. Matrix query: job, salary per department, total salary per job.**
+```sql
+SELECT job,
+       SUM(CASE WHEN deptno = 10 THEN sal ELSE 0 END) AS DEPT_10,
+       SUM(CASE WHEN deptno = 20 THEN sal ELSE 0 END) AS DEPT_20,
+       SUM(CASE WHEN deptno = 30 THEN sal ELSE 0 END) AS DEPT_30,
+       SUM(CASE WHEN deptno = 40 THEN sal ELSE 0 END) AS DEPT_40,
+       SUM(sal) AS TOTAL
+FROM employee GROUP BY job;
+```
+
+**Q6. Total employees and count hired in 1980, 1981, 1982 and 1983.**
+```sql
+SELECT COUNT(*) AS TOTAL,
+       SUM(CASE WHEN YEAR(hiredate)=1980 THEN 1 ELSE 0 END) AS '1980',
+       SUM(CASE WHEN YEAR(hiredate)=1981 THEN 1 ELSE 0 END) AS '1981',
+       SUM(CASE WHEN YEAR(hiredate)=1982 THEN 1 ELSE 0 END) AS '1982',
+       SUM(CASE WHEN YEAR(hiredate)=1983 THEN 1 ELSE 0 END) AS '1983'
+FROM employee;
+```
+
+**Q7. Query to get the last Sunday of the current month.**
+```sql
+SELECT DATE_SUB(LAST_DAY(CURDATE()),
+       INTERVAL (WEEKDAY(LAST_DAY(CURDATE())) + 1) % 7 DAY) AS last_sunday;
+```
+
+**Q8. Display department numbers and total number of employees in each department.**
+```sql
+SELECT deptno, COUNT(*) AS total_employees
+FROM employee GROUP BY deptno;
+```
+
+**Q9. Display the various jobs and total number of employees within each job group.**
+```sql
+SELECT job, COUNT(*) AS total_in_job FROM employee GROUP BY job;
+```
+
+**Q10. Display department numbers and total salary for each department.**
+```sql
+SELECT deptno, SUM(sal) AS total_salary FROM employee GROUP BY deptno;
+```
+
+---
+
+## Experiment 8 – Joins
+
+**Aim:** To retrieve combined data from multiple tables using various types of JOIN operations.  
+**Theory:** JOIN combines rows from two or more tables based on a related column. INNER JOIN returns only matching rows. LEFT JOIN returns all rows from the left table even without matches. SELF JOIN joins a table with itself (e.g., to find manager names from the same employee table).
+
+---
+
+**Q1. Display all employees with their dept name.**
+```sql
+SELECT e.ename, d.dname
+FROM employee e INNER JOIN department d ON e.deptno = d.deptno;
+```
+
+**Q2. Display employees whose manager name is JONES, and also display their manager name.**
+```sql
+SELECT e.ename AS employee, m.ename AS manager
+FROM employee e JOIN employee m ON e.mgr = m.empno
+WHERE m.ename = 'JONES';
+```
+
+**Q3. Display employee name, job, dept name, manager name — department wise.**
+```sql
+SELECT e.ename, e.job, d.dname, m.ename AS manager
+FROM employee e
+JOIN department d ON e.deptno = d.deptno
+LEFT JOIN employee m ON e.mgr = m.empno
+ORDER BY d.dname;
+```
+
+**Q4. List employees' name, job, salary and dept name for everyone except 'CLERK'. Sort by salary descending.**
+```sql
+SELECT e.ename, e.job, e.sal, d.dname
+FROM employee e JOIN department d ON e.deptno = d.deptno
+WHERE e.job <> 'CLERK'
+ORDER BY e.sal DESC;
+```
+
+**Q5. Display employee name, job and manager. Also display employees without manager.**
+```sql
+SELECT e.ename AS employee, e.job, m.ename AS manager
+FROM employee e LEFT JOIN employee m ON e.mgr = m.empno;
+```
+
+**Q6. List employee name, job, annual salary, deptno, dept name who earn 36000/year or are not clerks.**
+```sql
+SELECT e.ename, e.job, e.sal*12 AS annual_sal, e.deptno, d.dname
+FROM employee e JOIN department d ON e.deptno = d.deptno
+WHERE e.sal*12 >= 36000 OR e.job <> 'CLERK';
+```
+
+**Q7. List ename, job, annual sal, deptno, dname who earn 30000/year and are not clerks.**
+```sql
+SELECT e.ename, e.job, e.sal*12 AS annual_sal, e.deptno, d.dname
+FROM employee e JOIN department d ON e.deptno = d.deptno
+WHERE e.sal*12 >= 30000 AND e.job <> 'CLERK';
+```
+
+**Q8. List employees with their manager's name and number; show 'NO MANAGER' if no manager.**
+```sql
+SELECT e.empno, e.ename,
+       IFNULL(CAST(m.empno AS CHAR), 'NO MANAGER') AS mgr_no,
+       IFNULL(m.ename, 'NO MANAGER') AS mgr_name
+FROM employee e LEFT JOIN employee m ON e.mgr = m.empno;
+```
+
+**Q9. Select dept name, dept no and sum of sal.**
+```sql
+SELECT d.dname, d.deptno, SUM(e.sal) AS total_sal
+FROM department d LEFT JOIN employee e ON d.deptno = e.deptno
+GROUP BY d.deptno, d.dname;
+```
+
+**Q10. Display employee number, name and location (department name) in which he is working.**
+```sql
+SELECT e.empno, e.ename, d.dname AS department
+FROM employee e JOIN department d ON e.deptno = d.deptno;
+```
+
+**Q11. Display employee name and department name for each employee.**
+```sql
+SELECT e.ename, d.dname FROM employee e JOIN department d ON e.deptno = d.deptno;
+```
+
+---
+
+## Experiment 9 – Subqueries
+
+**Aim:** To use single-row and multi-row subqueries to filter and retrieve data based on computed values.  
+**Theory:** A subquery is a query nested inside another query. Single-row subqueries return one value (used with =, >, <). Multi-row subqueries return multiple values (used with IN, ANY, ALL). Correlated subqueries reference the outer query's table for row-by-row execution.
+
+---
+
+**Q1. Display the name of employee who earns the highest salary.**
+```sql
+SELECT ename FROM employee WHERE sal = (SELECT MAX(sal) FROM employee);
+```
+
+**Q2. Display employee number and name of the clerk earning highest salary among clerks.**
+```sql
+SELECT empno, ename FROM employee
+WHERE job = 'CLERK'
+AND sal = (SELECT MAX(sal) FROM employee WHERE job = 'CLERK');
+```
+
+**Q3. Display names of salesmen earning salary more than the highest salary of any clerk.**
+```sql
+SELECT ename FROM employee
+WHERE job = 'SALESMAN'
+AND sal > (SELECT MAX(sal) FROM employee WHERE job = 'CLERK');
+```
+
+**Q4. Display clerks who earn more than JAMES or less than SCOTT.**
+```sql
+SELECT ename FROM employee WHERE job = 'CLERK'
+AND (sal > (SELECT sal FROM employee WHERE ename = 'JAMES')
+ OR  sal < (SELECT sal FROM employee WHERE ename = 'SCOTT'));
+```
+
+**Q5. Display employees earning more than JAMES or more than SCOTT.**
+```sql
+SELECT ename FROM employee
+WHERE sal > (SELECT sal FROM employee WHERE ename = 'JAMES')
+   OR sal > (SELECT sal FROM employee WHERE ename = 'SCOTT');
+```
+
+**Q6. Display names of employees who earn the highest salary in their respective departments.**
+```sql
+SELECT ename, deptno, sal FROM employee e
+WHERE sal = (SELECT MAX(sal) FROM employee WHERE deptno = e.deptno);
+```
+
+**Q7. Display names of employees who earn the highest salary in their respective job groups.**
+```sql
+SELECT ename, job, sal FROM employee e
+WHERE sal = (SELECT MAX(sal) FROM employee WHERE job = e.job);
+```
+
+**Q8. Display employee names who are working in accounting dept.**
+```sql
+SELECT ename FROM employee
+WHERE deptno = (SELECT deptno FROM department WHERE dname = 'ACCOUNTING');
+```
+
+**Q9. Display employee names who are working in chicago.**
+```sql
+-- Note: Using SALES dept as Chicago proxy (loc column concept)
+SELECT ename FROM employee
+WHERE deptno IN (SELECT deptno FROM department WHERE dname = 'SALES');
+```
+
+**Q10. Display job groups having total salary greater than the maximum salary for managers.**
+```sql
+SELECT job, SUM(sal) AS total_sal FROM employee
+GROUP BY job
+HAVING SUM(sal) > (SELECT MAX(sal) FROM employee WHERE job = 'MANAGER');
+```
+
+---
+
+## Experiment 10 – ANY, ALL & Nested Queries
+
+**Aim:** To use ANY and ALL operators with subqueries for complex multi-value comparisons.  
+**Theory:** ANY returns TRUE if at least one value in the subquery satisfies the condition. ALL returns TRUE only if every value in the subquery satisfies the condition. These are used with comparison operators (>, <, =) paired with subqueries returning multiple rows. Correlated subqueries and self-joins handle complex relational conditions.
+
+---
+
+**Q1. Display employees from dept 10 with salary greater than ANY employee in other departments.**
+```sql
+SELECT ename, sal FROM employee
+WHERE deptno = 10
+AND sal > ANY (SELECT sal FROM employee WHERE deptno <> 10);
+```
+
+**Q2. Display employees from dept 10 with salary greater than ALL employees in other departments.**
+```sql
+SELECT ename, sal FROM employee
+WHERE deptno = 10
+AND sal > ALL (SELECT sal FROM employee WHERE deptno <> 10);
+```
+
+**Q3. Display details of employees in sales dept and grade 3 (sal 1401–2000).**
+```sql
+SELECT ename, sal, deptno FROM employee
+WHERE deptno = (SELECT deptno FROM department WHERE dname = 'SALES')
+AND sal BETWEEN 1401 AND 2000;
+```
+
+**Q4. Display those who are not managers but are managers of someone.**
+```sql
+SELECT DISTINCT ename FROM employee
+WHERE empno IN (SELECT mgr FROM employee WHERE mgr IS NOT NULL)
+AND job <> 'MANAGER';
+```
+
+**Q5. Display employees whose manager name is JONES.**
+```sql
+SELECT ename FROM employee
+WHERE mgr = (SELECT empno FROM employee WHERE ename = 'JONES');
+```
+
+**Q6. Display employees working in sales dept.**
+```sql
+SELECT ename FROM employee
+WHERE deptno = (SELECT deptno FROM department WHERE dname = 'SALES');
+```
+
+**Q7. Display employee name, deptname, salary and comm for those with sal between 2000 to 5000.**
+```sql
+SELECT e.ename, d.dname, e.sal, e.comm
+FROM employee e JOIN department d ON e.deptno = d.deptno
+WHERE e.sal BETWEEN 2000 AND 5000;
+```
+
+**Q8. Display employees whose salary is greater than their manager's salary.**
+```sql
+SELECT e.ename, e.sal FROM employee e
+JOIN employee m ON e.mgr = m.empno
+WHERE e.sal > m.sal;
+```
+
+**Q9. Display employees working in the same dept as their manager.**
+```sql
+SELECT e.ename FROM employee e
+JOIN employee m ON e.mgr = m.empno
+WHERE e.deptno = m.deptno;
+```
+
+**Q10. Display grade and employee names for dept 10 or 30, grade not 4, joined before 31-Dec-82.**
+```sql
+SELECT ename, deptno, sal, hiredate FROM employee
+WHERE deptno IN (10, 30)
+AND hiredate < '1982-12-31'
+AND sal NOT BETWEEN 2001 AND 3000;
+```
+
+---
+
+## Experiment 11 – Advanced Subqueries & DML Operations
+
+**Aim:** To use complex nested and correlated subqueries combined with DML (DELETE, UPDATE) and analytical ranking queries.  
+**Theory:** Correlated subqueries execute once per outer row and reference the outer query table. Complex DML operations use subqueries in WHERE to conditionally modify or remove data. LIMIT is used for Top-N queries in MySQL.
+
+---
+
+**Q1. Delete employees who joined before 31-Dec-82 in 'NEW YORK' or 'CHICAGO' departments.**
+```sql
+DELETE FROM employee
+WHERE hiredate < '1982-12-31'
+AND deptno IN (SELECT deptno FROM department WHERE dname IN ('ACCOUNTING','SALES'));
+```
+
+**Q2. Display employee name, job, dept name for all managers.**
+```sql
+SELECT e.ename, e.job, d.dname
+FROM employee e JOIN department d ON e.deptno = d.deptno
+WHERE e.job = 'MANAGER';
+```
+
+**Q3. Display name and salary of FORD if his salary equals the highest salary of his grade.**
+```sql
+SELECT ename, sal FROM employee
+WHERE ename = 'FORD'
+AND sal = (SELECT MAX(sal) FROM employee WHERE sal <= 3000 AND sal >= 2001);
+```
+
+**Q4. Find the top 5 earners of the company.**
+```sql
+SELECT ename, sal FROM employee ORDER BY sal DESC LIMIT 5;
+```
+
+**Q5. Display names of employees getting the highest salary.**
+```sql
+SELECT ename, sal FROM employee WHERE sal = (SELECT MAX(sal) FROM employee);
+```
+
+**Q6. Display employees whose salary equals the average of maximum and minimum.**
+```sql
+SELECT ename, sal FROM employee
+WHERE sal = (SELECT (MAX(sal) + MIN(sal)) / 2 FROM employee);
+```
+
+**Q7. Display dept name where at least 3 employees are working.**
+```sql
+SELECT d.dname FROM department d
+JOIN employee e ON d.deptno = e.deptno
+GROUP BY d.dname HAVING COUNT(*) >= 3;
+```
+
+**Q8. Display names of managers whose salary is more than average salary of company.**
+```sql
+SELECT ename, sal FROM employee
+WHERE job = 'MANAGER'
+AND sal > (SELECT AVG(sal) FROM employee);
+```
+
+**Q9. Display managers whose salary is more than the average salary of their own employees.**
+```sql
+SELECT m.ename, m.sal FROM employee m
+WHERE m.job = 'MANAGER'
+AND m.sal > (SELECT AVG(e.sal) FROM employee e WHERE e.mgr = m.empno);
+```
+
+**Q10. Display employee name, sal, comm and net pay for those whose net pay >= any other employee's salary.**
+```sql
+SELECT ename, sal, IFNULL(comm,0) AS comm,
+       sal + IFNULL(comm,0) AS net_pay
+FROM employee
+WHERE sal + IFNULL(comm,0) >= ANY (SELECT sal FROM employee);
+```
+
+---
+
+## Experiment 12 – Advanced Integrity & Real-world Queries
+
+**Aim:** To practice advanced correlated subqueries, grade-based comparisons, department-level analysis, and integrity-checking DML operations.  
+**Theory:** Advanced subqueries combine correlated references with aggregate functions. DELETE and UPDATE with subqueries maintain referential integrity. Complex GROUP BY with HAVING enables multi-level filtering. CASE WHEN simulates grade tables without creating additional tables.
+
+---
+
+**Q1. Display employees whose salary is less than their manager but more than any other manager's salary.**
+```sql
+SELECT e.ename, e.sal FROM employee e
+JOIN employee m ON e.mgr = m.empno
+WHERE e.sal < m.sal
+AND e.sal > ANY (SELECT sal FROM employee WHERE job = 'MANAGER');
+```
+
+**Q2. Find the number of employees whose salary is greater than their manager's salary.**
+```sql
+SELECT COUNT(*) AS count_emp FROM employee e
+JOIN employee m ON e.mgr = m.empno WHERE e.sal > m.sal;
+```
+
+**Q3. Display managers who are NOT working under PRESIDENT but under any other manager.**
+```sql
+SELECT e.ename AS manager FROM employee e
+JOIN employee m ON e.mgr = m.empno
+WHERE e.job = 'MANAGER' AND m.job <> 'PRESIDENT';
+```
+
+**Q4. Delete departments where no employee is working.**
+```sql
+DELETE FROM department
+WHERE deptno NOT IN (SELECT DISTINCT deptno FROM employee WHERE deptno IS NOT NULL);
+```
+
+**Q5. Delete records from emp table whose deptno is not available in dept table.**
+```sql
+DELETE FROM employee
+WHERE deptno NOT IN (SELECT deptno FROM department);
+```
+
+**Q6. Display earners whose salary is out of the grade range (700–5000).**
+```sql
+SELECT ename, sal FROM employee WHERE sal NOT BETWEEN 700 AND 5000;
+```
+
+**Q7. Display employee name, sal, comm and the one whose net pay is the greatest.**
+```sql
+SELECT ename, sal, IFNULL(comm,0) AS comm,
+       sal + IFNULL(comm,0) AS net_pay
+FROM employee
+WHERE sal + IFNULL(comm,0) = (SELECT MAX(sal + IFNULL(comm,0)) FROM employee);
+```
+
+**Q8. Display employees who are working in sales or research.**
+```sql
+SELECT ename, deptno FROM employee
+WHERE deptno IN (SELECT deptno FROM department WHERE dname IN ('SALES','RESEARCH'));
+```
+
+**Q9. Display the grade of JONES (based on salary range).**
+```sql
+SELECT ename, sal,
+       CASE
+           WHEN sal BETWEEN  700 AND 1200 THEN 1
+           WHEN sal BETWEEN 1201 AND 1400 THEN 2
+           WHEN sal BETWEEN 1401 AND 2000 THEN 3
+           WHEN sal BETWEEN 2001 AND 3000 THEN 4
+           WHEN sal BETWEEN 3001 AND 9999 THEN 5
+       END AS grade
+FROM employee WHERE ename = 'JONES';
+```
+
+**Q10. Display department name where the number of characters equals the number of employees in any other department.**
+```sql
+SELECT dname FROM department
+WHERE LENGTH(dname) IN (SELECT COUNT(*) FROM employee GROUP BY deptno);
+```
+
+---
+
+## 📚 References
+
+1. Korth, Silbertz, Sudarshan – *Database Concepts*, McGraw Hill
+2. Elmasri, Navathe – *Fundamentals of Database Systems*, Addison Wesley
+3. Ramakrishnan – *Database Management Systems*, McGraw Hill
+
+---
+
+*Prepared by: **Divyansh Srivastava** | Roll No: **2CSE17G1_270** | Course: UCS4001 – DBMS Lab*
+

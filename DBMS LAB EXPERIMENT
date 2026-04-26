@@ -1,11 +1,10 @@
-[README.md](https://github.com/user-attachments/files/27104852/README.md)# 🗄️ DBMS LAB
+(https://github.com/user-attachments/files/27104852/README.md)
+🗄️ DBMS LAB
 
-### **Name:** Divyansh Srivastava &nbsp;|&nbsp; **Roll No:** 2CSE17G1_270  
-### **Course:** UCS4001 – Database Management System  
+ Name: Divyansh Srivastava &nbsp;|&nbsp; Roll No: 2CSE17G1_270  
+ Course: UCS4001 – Database Management System  
 
----
-
-## 📋 Table of Contents
+ 📋 Table of Contents
 
 | Experiment | Topic |
 |:---:|---|
@@ -22,11 +21,9 @@
 | [11](#experiment-11--advanced-subqueries--dml-operations) | Advanced Subqueries & DML Operations |
 | [12](#experiment-12--advanced-integrity--real-world-queries) | Advanced Integrity & Real-world Queries |
 
----
+ 📌 Base Tables Used Throughout
 
-## 📌 Base Tables Used Throughout
-
-### EMPLOYEE Table
+ EMPLOYEE Table
 
 | EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
 |-------|--------|-----------|------|------------|------|------|--------|
@@ -45,7 +42,7 @@
 | 7902  | FORD   | ANALYST   | 7566 | 03-Dec-81  | 3000 | NULL | 20     |
 | 7934  | MILLER | CLERK     | 7782 | 23-Jan-82  | 1300 | NULL | 10     |
 
-### DEPARTMENT Table
+DEPARTMENT Table
 
 | DEPTNO | DNAME      |
 |--------|------------|
@@ -54,29 +51,29 @@
 | 30     | SALES      |
 | 40     | OPERATIONS |
 
+
+
+ Experiment 1 – Database & Table Creation
+
+Aim: To create a database, define tables with constraints, insert data, and perform basic DDL and DML operations.  
+Requirement:** MySQL/MariaDB environment.  
+Theory: A database stores tables and related data. DDL commands (CREATE, ALTER, DROP) define schema. DML commands (INSERT, UPDATE, DELETE) manipulate data. Constraints like PRIMARY KEY, NOT NULL, and FOREIGN KEY ensure data integrity.
+
 ---
 
-## Experiment 1 – Database & Table Creation
-
-**Aim:** To create a database, define tables with constraints, insert data, and perform basic DDL and DML operations.  
-**Requirement:** MySQL/MariaDB environment.  
-**Theory:** A database stores tables and related data. DDL commands (CREATE, ALTER, DROP) define schema. DML commands (INSERT, UPDATE, DELETE) manipulate data. Constraints like PRIMARY KEY, NOT NULL, and FOREIGN KEY ensure data integrity.
-
----
-
-### ✅ STEP 1 – Create Database
+✅ STEP 1 – Create Database
 
 ```sql
 CREATE DATABASE 2cse17g1_270;
 ```
 
-### ✅ STEP 2 – Use Database
+ ✅ STEP 2 – Use Database
 
 ```sql
 USE 2cse17g1_270;
 ```
 
-### ✅ STEP 3 – Create DEPARTMENT Table
+ ✅ STEP 3 – Create DEPARTMENT Table
 
 ```sql
 CREATE TABLE department (
@@ -85,7 +82,7 @@ CREATE TABLE department (
 );
 ```
 
-### ✅ STEP 4 – Create EMPLOYEE Table
+ ✅ STEP 4 – Create EMPLOYEE Table
 
 ```sql
 CREATE TABLE employee (
@@ -101,7 +98,7 @@ CREATE TABLE employee (
 );
 ```
 
-### ✅ STEP 5 – Insert into DEPARTMENT
+✅ STEP 5 – Insert into DEPARTMENT
 
 ```sql
 INSERT INTO department VALUES (10, 'RESEARCH');
@@ -110,7 +107,7 @@ INSERT INTO department VALUES (30, 'SALES');
 INSERT INTO department VALUES (40, 'OPERATIONS');
 ```
 
-### ✅ STEP 6 – Insert into EMPLOYEE
+✅ STEP 6 – Insert into EMPLOYEE
 
 ```sql
 INSERT INTO employee VALUES (7369,'SMITH','CLERK',7902,'1980-12-17',800,NULL,20);
@@ -129,98 +126,98 @@ INSERT INTO employee VALUES (7902,'FORD','ANALYST',7566,'1981-12-03',3000,NULL,2
 INSERT INTO employee VALUES (7934,'MILLER','CLERK',7782,'1982-01-23',1300,NULL,10);
 ```
 
-### ✅ STEP 7 – Employee_master Operations
+ ✅ STEP 7 – Employee_master Operations
 
-**1. Create Employee_master table with data using Employee table:**
+1. Create Employee_master table with data using Employee table:
 ```sql
 CREATE TABLE Employee_master AS SELECT * FROM employee;
 ```
 
-**2. Delete all records from Employee_master where DeptNo is 10:**
+2. Delete all records from Employee_master where DeptNo is 10:
 ```sql
 DELETE FROM Employee_master WHERE deptno = 10;
 ```
 
-**3. Update salary by 10% for employees in DeptNo 20:**
+3. Update salary by 10% for employees in DeptNo 20:
 ```sql
 UPDATE Employee_master SET sal = sal * 1.10 WHERE deptno = 20;
 ```
 
-**4. Alter SAL column size to DECIMAL(10,2):**
+4. Alter SAL column size to DECIMAL(10,2):
 ```sql
 ALTER TABLE Employee_master MODIFY sal DECIMAL(10,2);
 ```
 
-**5. Drop Employee_master Table:**
+5. Drop Employee_master Table:
 ```sql
 DROP TABLE Employee_master;
 ```
 
-### ✅ STEP 8 – Display Data
+✅ STEP 8 – Display Data
 
 ```sql
 SELECT * FROM employee;
 SELECT * FROM department;
 ```
 
----
 
-## Experiment 2 – Basic Retrieval Queries
 
-**Aim:** To retrieve data from the employee and department tables using various filtering conditions.  
-**Theory:** The SELECT statement retrieves data. WHERE clause filters rows. Operators like IN, NOT IN, BETWEEN, and comparison operators refine results. DISTINCT eliminates duplicate values.
+Experiment 2 – Basic Retrieval Queries
 
----
+Aim: To retrieve data from the employee and department tables using various filtering conditions.  
+Theory:The SELECT statement retrieves data. WHERE clause filters rows. Operators like IN, NOT IN, BETWEEN, and comparison operators refine results. DISTINCT eliminates duplicate values.
 
-**Q1. List all distinct jobs in Employee.**
+
+
+Q1. List all distinct jobs in Employee.
 ```sql
 SELECT DISTINCT job FROM employee;
 ```
 
-**Q2. List all information about employees in Department Number 30.**
+Q2. List all information about employees in Department Number 30.
 ```sql
 SELECT * FROM employee WHERE deptno = 30;
 ```
 
-**Q3. Find all department numbers with department names greater than 20.**
+3. Find all department numbers with department names greater than 20
 ```sql
 SELECT deptno, dname FROM department WHERE deptno > 20;
 ```
 
-**Q4. Find all information about all managers as well as clerks in department 30.**
+Q4. Find all information about all managers as well as clerks in department 30.
 ```sql
 SELECT * FROM employee
 WHERE deptno = 30 AND job IN ('MANAGER', 'CLERK');
 ```
 
-**Q5. List the Employee name, Employee numbers and department of all clerks.**
+Q5. List the Employee name, Employee numbers and department of all clerks.
 ```sql
 SELECT ename, empno, deptno FROM employee WHERE job = 'CLERK';
 ```
 
-**Q6. Find all managers not in department 30.**
+Q6. Find all managers not in department 30.
 ```sql
 SELECT * FROM employee WHERE job = 'MANAGER' AND deptno <> 30;
 ```
 
-**Q7. List information about all employees in department 10 who are not manager or clerks.**
+Q7. List information about all employees in department 10 who are not manager or clerks.
 ```sql
 SELECT * FROM employee
 WHERE deptno = 10 AND job NOT IN ('MANAGER', 'CLERK');
 ```
 
-**Q8. Find Employees and jobs earning between 1200 and 1400.**
+Q8. Find Employees and jobs earning between 1200 and 1400.
 ```sql
 SELECT ename, job FROM employee WHERE sal BETWEEN 1200 AND 1400;
 ```
 
-**Q9. List Name and Department Number of employees who are clerks, analyst or salesman.**
+Q9. List Name and Department Number of employees who are clerks, analyst or salesman.
 ```sql
 SELECT ename, deptno FROM employee
 WHERE job IN ('CLERK', 'ANALYST', 'SALESMAN');
 ```
 
-**Q10. List Name and Department Number of employees whose names began with M.**
+Q10. List Name and Department Number of employees whose names began with M.
 ```sql
 SELECT ename, deptno FROM employee WHERE ename LIKE 'M%';
 ```
